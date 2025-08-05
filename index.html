@@ -3,275 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NTT Data - Genesys Chat Test</title>
+    <title>NTT Data IT-Service Desk - Genesys Cloud Demo</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0066cc, #004499);
-            min-height: 100vh; color: white; padding: 20px; 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
+                        url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
         }
-        
-        .container { max-width: 900px; margin: 0 auto; }
-        
-        .header { 
-            text-align: center; padding: 40px 0; margin-bottom: 40px; 
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        
-        .logo { font-size: 2rem; margin-bottom: 10px; letter-spacing: 2px; }
-        .title { font-size: 2.5rem; font-weight: 300; margin-bottom: 15px; }
-        .subtitle { font-size: 1.1rem; opacity: 0.8; }
-        
-        .chat-section { 
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 40px; border: 1px solid rgba(255,255,255,0.2);
+
+        .header {
+            text-align: center;
+            padding: 60px 0 40px 0;
+            margin-bottom: 60px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
             margin-bottom: 30px;
         }
-        
-        .chat-button { 
-            display: block; width: 250px; margin: 0 auto 30px auto; padding: 18px 35px;
-            background: linear-gradient(135deg, #ffffff, #f0f0f0); color: #0066cc;
-            border: none; border-radius: 50px; font-size: 1.3rem; font-weight: 600;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+
+        .ntt-logo {
+            width: 200px;
+            height: auto;
+            max-height: 80px;
+            object-fit: contain;
         }
-        
-        .chat-button:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4); 
+
+        .tagline {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+            opacity: 0.95;
         }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        /* Service Icons Row */
+        .services-icons {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin: 80px 0;
+            flex-wrap: wrap;
+        }
+
+        .service-icon-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 140px;
+        }
+
+        .service-icon-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .service-icon-card.active {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .service-icon-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+
+        .service-name {
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Detail Section */
+        .service-details {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            min-height: 400px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-header {
+            text-align: center;
             margin-bottom: 30px;
         }
-        
-        .info-card { 
-            background: rgba(255,255,255,0.05); 
-            border-radius: 15px; 
-            padding: 25px; 
-        }
-        
-        .info-title { 
-            font-size: 1.3rem; font-weight: 600; margin-bottom: 15px; 
-            color: #66ccff; display: flex; align-items: center; gap: 10px;
-        }
-        
-        .info-item { 
-            margin: 8px 0; font-size: 0.95rem; opacity: 0.9; 
-            display: flex; justify-content: space-between;
-        }
-        
-        .status-badge {
-            background: rgba(40, 167, 69, 0.2);
-            color: #28a745;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+
+        .detail-title {
+            font-size: 2rem;
             font-weight: 600;
+            margin-bottom: 15px;
         }
-        
-        .action-buttons { 
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+
+        .detail-action {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .action-button {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #0066cc, #004499);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #0077dd, #0055aa);
+        }
+
+        /* Form Styles */
+        .service-form {
             margin-top: 30px;
         }
-        
-        .action-btn { 
-            padding: 12px 20px; background: rgba(255,255,255,0.2); 
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
             border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 10px; color: white; cursor: pointer; 
-            font-size: 0.95rem; transition: all 0.3s ease;
-            text-align: center; font-weight: 500;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
-        
-        .action-btn:hover { 
-            background: rgba(255,255,255,0.3); 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #66ccff;
+            background: rgba(255,255,255,0.15);
         }
-        
-        .debug-section { 
-            background: rgba(0,0,0,0.4); border-radius: 20px; 
-            padding: 30px; margin-top: 30px; display: none; 
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.6);
         }
-        
-        .debug-title { 
-            font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; 
-            color: #ffcc66; display: flex; align-items: center; gap: 10px;
-        }
-        
-        .debug-log { 
-            background: rgba(0,0,0,0.6); border-radius: 15px; 
-            padding: 20px; max-height: 400px; overflow-y: auto; 
-            font-family: 'Courier New', monospace; font-size: 0.9rem; 
-            line-height: 1.5; border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .debug-entry { 
-            margin: 5px 0; padding: 5px 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-        }
-        
-        .status-indicator { 
-            display: inline-block; width: 12px; height: 12px; 
-            border-radius: 50%; margin-right: 10px; 
-        }
-        
-        .status-success { background-color: #28a745; }
-        .status-warning { background-color: #ffc107; }
-        .status-error { background-color: #dc3545; }
-        .status-info { background-color: #17a2b8; }
-        
-        .github-info {
+
+        .phone-display {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #66ccff;
+            margin: 20px 0;
+            padding: 20px;
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
             padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.9rem;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
             opacity: 0.8;
         }
-        
-        @media (max-width: 600px) {
-            .title { font-size: 2rem; }
-            .chat-section { padding: 25px; }
-            .container { padding: 0 10px; }
-            .action-buttons { grid-template-columns: 1fr; }
+
+        .chat-placeholder {
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .services-icons {
+                gap: 40px;
+            }
+            
+            .service-icon {
+                font-size: 3rem;
+            }
+            
+            .service-details {
+                padding: 25px;
+                margin: 0 15px;
+            }
+            
+            .ntt-logo {
+                width: 150px;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-icons {
+                gap: 20px;
+            }
+            
+            .service-icon-card {
+                min-width: 100px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <div class="logo">NTT DATA</div>
-            <div class="title">🧪 Genesys AI Studio Bot Test</div>
-            <div class="subtitle">Live Test der Chat-Integration ohne CSP Beschränkungen</div>
+            <div class="logo-container">
+                <img src="ntt-logo.jpg" alt="NTT DATA" class="ntt-logo">
+            </div>
+            <div class="tagline">IT-Service Desk</div>
+            <div class="subtitle">Genesys Cloud Demoplattform - Digitale Transformation für Ihr Unternehmen</div>
         </header>
 
-        <div class="chat-section">
-            <button class="chat-button" onclick="startChatTest()">
-                🤖 AI Studio Chat starten
-            </button>
-            
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-title">📋 Deployment Details</div>
-                    <div class="info-item">
-                        <span>ID:</span> 
-                        <span>769e1351-f0d1-4485-9dd8-397ea63c615b</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Environment:</span> 
-                        <span>prod-euc1</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Region:</span> 
-                        <span>Frankfurt</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Status:</span> 
-                        <span class="status-badge">Active</span>
-                    </div>
-                </div>
-                
-                <div class="info-card">
-                    <div class="info-title">🤖 AI Configuration</div>
-                    <div class="info-item">
-                        <span>Bot Type:</span> 
-                        <span>AI Studio</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Flow:</span> 
-                        <span>Digital Bot Flow</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Channel:</span> 
-                        <span>Web Messaging</span>
-                    </div>
-                    <div class="info-item">
-                        <span>Integration:</span> 
-                        <span>Website</span>
-                    </div>
-                </div>
+        <!-- Service Icons -->
+        <div class="services-icons">
+            <div class="service-icon-card" onclick="showService('call')" id="icon-call">
+                <div class="service-icon">📞</div>
+                <div class="service-name">Inbound Call</div>
             </div>
             
-            <div class="action-buttons">
-                <button class="action-btn" onclick="runFullDiagnostics()">
-                    🔧 Vollständige Diagnose
-                </button>
-                <button class="action-btn" onclick="testSDKOnly()">
-                    ⚡ SDK Status prüfen
-                </button>
-                <button class="action-btn" onclick="testBasicCommands()">
-                    🧪 Commands testen
-                </button>
-                <button class="action-btn" onclick="inspectPage()">
-                    🔍 Seite analysieren
-                </button>
-                <button class="action-btn" onclick="clearLogs()">
-                    🗑️ Logs löschen
-                </button>
-                <button class="action-btn" onclick="showHelp()">
-                    ❓ Hilfe & Tipps
-                </button>
+            <div class="service-icon-card" onclick="showService('callback')" id="icon-callback">
+                <div class="service-icon">📅</div>
+                <div class="service-name">Rückruf</div>
+            </div>
+            
+            <div class="service-icon-card" onclick="showService('email')" id="icon-email">
+                <div class="service-icon">✉️</div>
+                <div class="service-name">E-Mail</div>
+            </div>
+            
+            <div class="service-icon-card" onclick="showService('chat')" id="icon-chat">
+                <div class="service-icon">💬</div>
+                <div class="service-name">Live Chat</div>
+            </div>
+            
+            <div class="service-icon-card" onclick="showService('social')" id="icon-social">
+                <div class="service-icon">🌐</div>
+                <div class="service-name">Social Media</div>
             </div>
         </div>
 
-        <div class="debug-section" id="debug-section">
-            <div class="debug-title">
-                📊 Live Debug Console
-            </div>
-            <div class="debug-log" id="debug-log"></div>
-        </div>
-        
-        <div class="github-info">
-            🌐 Gehostet auf GitHub Pages | 🚀 Ohne CSP Beschränkungen | 🔒 HTTPS gesichert
+        <!-- Service Details Section -->
+        <div class="service-details" id="service-details">
+            <!-- Content wird dynamisch geladen -->
         </div>
     </div>
 
-    <script>
-        // DEBUG SYSTEM - MUSS ZUERST DEFINIERT WERDEN
-        function logDebug(message, type = 'info', details = null) {
-            const debugLog = document.getElementById('debug-log');
-            const debugSection = document.getElementById('debug-section');
-            
-            if (debugLog) {
-                const timestamp = new Date().toLocaleTimeString();
-                const statusClass = 'status-' + type;
-                
-                const entry = document.createElement('div');
-                entry.className = 'debug-entry';
-                entry.innerHTML = `<span class="status-indicator ${statusClass}"></span>[${timestamp}] ${message}`;
-                
-                if (details) {
-                    entry.innerHTML += `<br><span style="margin-left: 22px; opacity: 0.7; font-size: 0.85em;">${details}</span>`;
-                }
-                
-                debugLog.appendChild(entry);
-                debugLog.scrollTop = debugLog.scrollHeight;
-                debugSection.style.display = 'block';
-            }
-            
-            console.log(`[GENESYS-${type.toUpperCase()}]`, message, details || '');
-        }
-
-        // INITIALIZE EARLY
-        window.genesysSDKLoaded = false;
-        window.genesysReady = false;
-        
-        // PAGE READY
-        document.addEventListener('DOMContentLoaded', function() {
-            logDebug('📄 GitHub Pages Test-Seite geladen', 'success');
-            logDebug('🎯 Bereit für AI Studio Bot Test', 'info');
-        });
-    </script>
-
-    <!-- Genesys Bootstrap SDK -->
+    <!-- Genesys Bootstrap - BACK TO BASICS -->
     <script type="text/javascript" charset="utf-8">
       (function (g, e, n, es, ys) {
         g['_genesysJs'] = e;
@@ -280,438 +336,1004 @@
         };
         g[e].t = 1 * new Date();
         g[e].c = es;
-        ys = document.createElement('script'); 
-        ys.async = 1; 
-        ys.src = n; 
-        ys.charset = 'utf-8';
-        ys.onload = function() {
-            if (typeof logDebug === 'function') {
-                logDebug('✅ Genesys Bootstrap SDK erfolgreich geladen', 'success');
-                logDebug('🔗 SDK URL: ' + n, 'info');
-            }
-            window.genesysSDKLoaded = true;
-        };
-        ys.onerror = function() {
-            if (typeof logDebug === 'function') {
-                logDebug('❌ Genesys Bootstrap SDK Fehler beim Laden', 'error');
-                logDebug('🔗 Fehlerhafte URL: ' + n, 'error');
-            }
-            window.genesysSDKLoaded = false;
-        };
-        document.head.appendChild(ys);
+        ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
       })(window, 'Genesys', 'https://apps.mypurecloud.de/genesys-bootstrap/genesys.min.js', {
         environment: 'prod-euc1',
         deploymentId: '769e1351-f0d1-4485-9dd8-397ea63c615b'
       });
 
-      // Genesys Ready Handler
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-            if (typeof Genesys !== 'undefined') {
-                try {
-                    Genesys('subscribe', 'ready', function() {
-                        if (typeof logDebug === 'function') {
-                            logDebug('🚀 Genesys SDK Ready Event empfangen', 'success');
-                            logDebug('📋 SDK erfolgreich initialisiert', 'success');
-                        }
-                        window.genesysReady = true;
-                    });
-                } catch (e) {
-                    if (typeof logDebug === 'function') {
-                        logDebug('❌ Genesys Ready Handler Fehler: ' + e.message, 'error');
-                    }
-                }
-            }
-        }, 1000);
+      // Basic ready handler
+      Genesys('subscribe', 'ready', function() {
+        console.log('Genesys Bootstrap SDK geladen');
+        console.log('Verfügbare Funktionen:', Object.keys(Genesys));
+        window.genesysReady = true;
       });
     </script>
 
     <script>
-        // MAIN FUNCTIONS - NACH DEBUG SYSTEM
+        // Service Content Data
+        const serviceContent = {
+            call: {
+                title: "Inbound Call Service",
+                action: "Jetzt anrufen",
+                phone: "+49 (0) 211 9462 7000"
+            },
+            callback: {
+                title: "Rückruf Service",
+                action: "Rückruf planen"
+            },
+            email: {
+                title: "E-Mail Support",
+                action: "Nachricht senden"
+            },
+            chat: {
+                title: "Live Chat Support",
+                action: "Chat starten"
+            },
+            social: {
+                title: "Social Media Support",
+                action: "Social Media kontaktieren"
+            }
+        };
 
-        // Main Chat Test Function
-        function startChatTest() {
-            logDebug('=== AI STUDIO CHAT TEST GESTARTET ===', 'info');
-            logDebug('🎯 Deployment: 769e1351-f0d1-4485-9dd8-397ea63c615b', 'info');
+        // Show service details
+        function showService(serviceType) {
+            console.log('showService called with:', serviceType);
             
-            // Systematic test approach
-            checkEnvironment();
-            setTimeout(checkSDKStatus, 1000);
-            setTimeout(attemptChatStart, 3000);
-        }
-
-        function checkEnvironment() {
-            logDebug('🌐 === UMGEBUNGS-CHECK ===', 'info');
-            logDebug('📍 URL: ' + window.location.href, 'info');
-            logDebug('🌍 User Agent: ' + navigator.userAgent.split(' ').slice(-2).join(' '), 'info');
-            logDebug('🔒 Protokoll: ' + window.location.protocol, 'info');
+            // Remove active state from all icons
+            document.querySelectorAll('.service-icon-card').forEach(card => {
+                card.classList.remove('active');
+            });
             
-            if (window.location.protocol === 'https:') {
-                logDebug('✅ HTTPS aktiv - Genesys kompatibel', 'success');
-            } else {
-                logDebug('⚠️ HTTP erkannt - kann Probleme verursachen', 'warning');
+            // Add active state to selected icon
+            document.getElementById('icon-' + serviceType).classList.add('active');
+            
+            const service = serviceContent[serviceType];
+            const detailsDiv = document.getElementById('service-details');
+            
+            let contentHTML = '';
+            
+            switch(serviceType) {
+                case 'call':
+                    contentHTML = '<div class="detail-header"><div class="detail-title">' + service.title + '</div></div><div class="phone-display">' + service.phone + '</div><div class="detail-action"><button class="action-button" onclick="initiateCall()">' + service.action + '</button></div>';
+                    break;
+                    
+                case 'callback':
+                    contentHTML = '<div class="detail-header"><div class="detail-title">' + service.title + '</div></div><div class="service-form"><div class="form-row"><div class="form-group"><label>Ihr Name *</label><input type="text" placeholder="Vor- und Nachname" required></div><div class="form-group"><label>Telefonnummer *</label><input type="tel" placeholder="+49 ..." required></div></div><div class="form-row"><div class="form-group"><label>Gewünschter Termin *</label><input type="datetime-local" required></div><div class="form-group"><label>Thema</label><select><option>IT-Problem</option><option>Software Support</option><option>Hardware Anfrage</option><option>Beratung</option><option>Sonstiges</option></select></div></div><div class="form-group"><label>Kurze Beschreibung</label><textarea rows="3" placeholder="Beschreiben Sie kurz Ihr Anliegen..."></textarea></div><div class="detail-action"><button class="action-button" onclick="submitCallback()">Rückruf bestätigen</button></div></div>';
+                    break;
+                    
+                case 'email':
+                    contentHTML = '<div class="detail-header"><div class="detail-title">' + service.title + '</div></div><div class="service-form"><div class="form-row"><div class="form-group"><label>Ihr Name *</label><input type="text" placeholder="Vor- und Nachname" required></div><div class="form-group"><label>E-Mail Adresse *</label><input type="email" placeholder="ihre.email@unternehmen.de" required></div></div><div class="form-row"><div class="form-group"><label>Betreff *</label><input type="text" placeholder="Kurze Beschreibung Ihres Anliegens" required></div><div class="form-group"><label>Priorität</label><select><option>Normal</option><option>Hoch</option><option>Kritisch</option></select></div></div><div class="form-group"><label>Nachricht *</label><textarea rows="4" placeholder="Beschreiben Sie Ihr Anliegen detailliert..." required></textarea></div><div class="detail-action"><button class="action-button" onclick="submitEmail()">E-Mail senden</button></div></div>';
+                    break;
+                    
+                case 'chat':
+                    contentHTML = '<div class="detail-header"><div class="detail-title">' + service.title + '</div></div><div class="detail-action"><button class="action-button" onclick="startMessaging()">' + service.action + '</button></div><div class="chat-container" id="chat-widget-container" style="display: none;"><div class="chat-placeholder"><div style="margin-bottom: 20px;">💬</div><div>Web Messaging wird geladen...</div></div></div><div class="debug-section" id="debug-section" style="display: none; margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; font-size: 0.9rem;"><div style="font-weight: bold; margin-bottom: 10px;">🔧 Debug Informationen:</div><div id="debug-log"></div><button class="action-button" onclick="runDiagnostics()" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">Diagnose starten</button></div>';
+                    break;
+                    
+                case 'social':
+                    contentHTML = '<div class="detail-header"><div class="detail-title">' + service.title + '</div></div><div class="detail-action"><button class="action-button" onclick="openSocialMedia()">' + service.action + '</button></div>';
+                    break;
+                    
+                default:
+                    contentHTML = '<div class="detail-header"><div class="detail-title">Service nicht gefunden</div></div>';
+            }
+            
+            detailsDiv.innerHTML = contentHTML;
+            detailsDiv.style.display = 'block';
+            detailsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Add debug section for chat
+            if (serviceType === 'chat') {
+                const debugHTML = `
+                    <div class="debug-section" id="debug-section" style="display: none; margin-top: 20px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; font-size: 0.9rem;">
+                        <div style="font-weight: bold; margin-bottom: 10px; color: #ffcc66;">🔧 Debug Informationen:</div>
+                        <div id="debug-log" style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 15px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;"></div>
+                        <button class="action-button" onclick="runDiagnostics()" style="margin-top: 15px; padding: 8px 20px; font-size: 0.9rem;">🔧 Diagnose starten</button>
+                    </div>
+                `;
+                detailsDiv.innerHTML += debugHTML;
             }
         }
 
-        function checkSDKStatus() {
-            logDebug('🔍 === SDK STATUS CHECK ===', 'info');
+        // Action handlers
+        function initiateCall() {
+            alert('Click-to-Dial wird mit Genesys Platform API implementiert');
+        }
+
+        function submitCallback() {
+            alert('Callback-Request wird über Genesys API gesendet');
+        }
+
+        function submitEmail() {
+            alert('E-Mail wird über Backend-Integration versendet');
+        }
+
+        function startMessaging() {
+            console.log('Testing Basic Genesys Integration...');
             
-            if (window.genesysSDKLoaded === true) {
-                logDebug('✅ SDK Loading: Erfolgreich', 'success');
-            } else if (window.genesysSDKLoaded === false) {
-                logDebug('❌ SDK Loading: Fehlgeschlagen', 'error');
-                return;
-            } else {
-                logDebug('⏳ SDK Loading: In Progress...', 'warning');
+            const chatContainer = document.getElementById('chat-widget-container');
+            const debugSection = document.getElementById('debug-section');
+            const debugLog = document.getElementById('debug-log');
+            
+            if (chatContainer) {
+                chatContainer.style.display = 'block';
+                chatContainer.innerHTML = '<div class="chat-placeholder"><div style="margin-bottom: 20px;">🔧</div><div>Basic Genesys Integration Test...</div></div>';
             }
             
+            if (debugSection && debugLog) {
+                debugSection.style.display = 'block';
+                debugLog.innerHTML = '';
+                addDebugLog('🔧 === BASIC GENESYS TEST ===');
+            }
+            
+            // Wait for Genesys to be ready
+            if (window.genesysReady && typeof Genesys !== 'undefined') {
+                runBasicGenesysTest();
+            } else {
+                addDebugLog('⏳ Warte auf Genesys Bootstrap SDK...');
+                
+                let attempts = 0;
+                const checkInterval = setInterval(function() {
+                    attempts++;
+                    addDebugLog('🔄 Versuch ' + attempts + '/5 - Prüfe Genesys SDK...');
+                    
+                    if (window.genesysReady && typeof Genesys !== 'undefined') {
+                        clearInterval(checkInterval);
+                        addDebugLog('✅ Genesys SDK geladen nach ' + attempts + ' Versuchen');
+                        runBasicGenesysTest();
+                    } else if (attempts >= 5) {
+                        clearInterval(checkInterval);
+                        addDebugLog('❌ Genesys SDK konnte nicht geladen werden');
+                        showBasicTestResults();
+                    }
+                }, 2000);
+            }
+        }
+
+        function runBasicGenesysTest() {
+            addDebugLog('🧪 Führe Basic Genesys Tests durch...');
+            
+            // Test 1: SDK Verfügbarkeit
             if (typeof Genesys !== 'undefined') {
-                logDebug('✅ Genesys Objekt: Verfügbar', 'success');
+                addDebugLog('✅ Genesys SDK: Verfügbar');
+                addDebugLog('🔍 Genesys Type: ' + typeof Genesys);
                 
                 try {
-                    logDebug('📋 Genesys Type: ' + typeof Genesys, 'info');
-                    
-                    // Test basic commands
-                    const basicTests = ['version', 'status'];
-                    basicTests.forEach(function(test) {
-                        try {
-                            const result = Genesys(test);
-                            logDebug(`✅ Genesys("${test}"): ${result || 'OK'}`, 'success');
-                        } catch (e) {
-                            logDebug(`⚠️ Genesys("${test}"): ${e.message}`, 'warning');
-                        }
-                    });
-                    
+                    addDebugLog('📋 Genesys Properties: ' + Object.keys(Genesys).slice(0, 5).join(', ') + '...');
                 } catch (e) {
-                    logDebug('❌ SDK Test Fehler: ' + e.message, 'error');
+                    addDebugLog('⚠️ Kann Genesys Properties nicht lesen');
                 }
             } else {
-                logDebug('❌ Genesys Objekt: Nicht verfügbar', 'error');
-            }
-        }
-
-        function attemptChatStart() {
-            logDebug('🚀 === CHAT START VERSUCHE ===', 'info');
-            
-            if (typeof Genesys === 'undefined') {
-                logDebug('❌ Kann Chat nicht starten - SDK nicht verfügbar', 'error');
-                showTroubleshootingAdvice();
-                return;
+                addDebugLog('❌ Genesys SDK: Nicht verfügbar');
             }
             
-            // Multiple approaches for AI Studio Bot
-            const chatApproaches = [
-                {
-                    name: 'Simple Open Command',
-                    action: function() { return Genesys('open'); }
-                },
-                {
-                    name: 'Messenger Open',
-                    action: function() { return Genesys('command', 'Messenger.open'); }
-                },
-                {
-                    name: 'WebMessaging Open',
-                    action: function() { return Genesys('command', 'WebMessaging.open'); }
-                },
-                {
-                    name: 'Chat Start',
-                    action: function() { return Genesys('command', 'Chat.start'); }
-                },
-                {
-                    name: 'Widget Show',
-                    action: function() { return Genesys('command', 'Widget.show'); }
-                }
+            // Test 2: Basic Commands
+            addDebugLog('');
+            addDebugLog('🧪 === BASIC COMMAND TESTS ===');
+            
+            const basicCommands = [
+                'version',
+                'status',
+                'info'
             ];
             
-            let successCount = 0;
-            chatApproaches.forEach(function(approach, index) {
-                try {
-                    logDebug(`🧪 Versuch ${index + 1}: ${approach.name}`, 'info');
-                    const result = approach.action();
-                    logDebug(`✅ ${approach.name}: ${result || 'Command sent'}`, 'success');
-                    successCount++;
-                } catch (e) {
-                    logDebug(`❌ ${approach.name}: ${e.message}`, 'error');
-                }
-            });
-            
-            logDebug(`📊 Erfolgreiche Commands: ${successCount}/${chatApproaches.length}`, 
-                    successCount > 0 ? 'success' : 'error');
-            
-            // Check for widgets after attempts
-            setTimeout(function() {
-                searchForChatWidgets();
-            }, 4000);
-        }
-
-        function searchForChatWidgets() {
-            logDebug('🔍 === WIDGET SUCHE ===', 'info');
-            
-            const widgetSelectors = [
-                // Genesys specific
-                '*[class*="genesys"]',
-                '*[id*="genesys"]',
-                '*[class*="cx-"]',
-                '*[id*="cx-"]',
-                
-                // Messaging specific
-                '*[class*="messenger"]',
-                '*[id*="messenger"]',
-                '*[class*="webchat"]',
-                '*[id*="webchat"]',
-                
-                // iFrames
-                'iframe[src*="genesys"]',
-                'iframe[src*="pure"]',
-                'iframe[src*="chat"]',
-                'iframe[src*="messaging"]',
-                'iframe[title*="chat"]'
-            ];
-            
-            let totalWidgets = 0;
-            let visibleWidgets = 0;
-            
-            widgetSelectors.forEach(function(selector) {
-                const elements = document.querySelectorAll(selector);
-                if (elements.length > 0) {
-                    totalWidgets += elements.length;
-                    
-                    elements.forEach(function(el, i) {
-                        const isVisible = el.offsetHeight > 0 && el.offsetWidth > 0;
-                        const info = `${el.tagName}${el.className ? '.' + el.className.split(' ')[0] : ''}${el.id ? '#' + el.id : ''}`;
-                        
-                        if (isVisible) {
-                            visibleWidgets++;
-                            logDebug(`✅ Sichtbar: ${info}`, 'success');
-                        } else {
-                            logDebug(`🔒 Versteckt: ${info}`, 'warning');
-                        }
-                        
-                        // Log additional details for iframes
-                        if (el.tagName === 'IFRAME' && el.src) {
-                            logDebug(`   📍 iFrame Src: ${el.src.substring(0, 60)}...`, 'info');
-                        }
-                    });
-                }
-            });
-            
-            // Results summary
-            if (totalWidgets === 0) {
-                logDebug('❌ Keine Chat-Widgets gefunden', 'error');
-                logDebug('💡 AI Studio Bot möglicherweise nicht für Web-Integration konfiguriert', 'warning');
-                showTroubleshootingAdvice();
-            } else {
-                logDebug(`🎉 ${totalWidgets} Widget(s) gefunden, ${visibleWidgets} sichtbar`, 'success');
-                if (visibleWidgets === 0) {
-                    logDebug('⚠️ Widgets vorhanden aber nicht sichtbar', 'warning');
-                    logDebug('💡 Versuche Widgets sichtbar zu machen...', 'info');
-                    attemptShowHiddenWidgets();
-                }
-            }
-        }
-
-        function attemptShowHiddenWidgets() {
-            const hiddenElements = document.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"], [hidden]');
-            let showCount = 0;
-            
-            hiddenElements.forEach(function(el) {
-                const className = el.className ? el.className.toString().toLowerCase() : '';
-                const id = el.id ? el.id.toLowerCase() : '';
-                
-                if (className.includes('genesys') || className.includes('messenger') || 
-                    id.includes('genesys') || id.includes('messenger')) {
-                    
-                    // Try to show the element
-                    el.style.display = 'block';
-                    el.style.visibility = 'visible';
-                    el.removeAttribute('hidden');
-                    el.style.position = 'fixed';
-                    el.style.bottom = '20px';
-                    el.style.right = '20px';
-                    el.style.zIndex = '9999';
-                    
-                    showCount++;
-                    logDebug(`🔧 Widget sichtbar gemacht: ${el.tagName}`, 'success');
-                }
-            });
-            
-            if (showCount > 0) {
-                logDebug(`✅ ${showCount} Widget(s) sichtbar gemacht`, 'success');
-            } else {
-                logDebug('⚠️ Keine versteckten Widgets zum Einblenden gefunden', 'warning');
-            }
-        }
-
-        function showTroubleshootingAdvice() {
-            logDebug('', 'info');
-            logDebug('🔧 === TROUBLESHOOTING TIPPS ===', 'warning');
-            logDebug('1. Prüfe Deployment-Konfiguration in Genesys Cloud', 'warning');
-            logDebug('2. Stelle sicher dass eine Queue zugewiesen ist', 'warning');
-            logDebug('3. AI Studio Bot muss "Published" status haben', 'warning');
-            logDebug('4. Channel "Web Messaging" muss aktiviert sein', 'warning');
-            logDebug('5. Teste zuerst in Genesys Cloud direkt', 'warning');
-        }
-
-        // Additional Test Functions
-        function runFullDiagnostics() {
-            clearLogs();
-            logDebug('=== VOLLSTÄNDIGE SYSTEM-DIAGNOSE ===', 'info');
-            
-            checkEnvironment();
-            setTimeout(testSDKOnly, 500);
-            setTimeout(testBasicCommands, 1000);
-            setTimeout(inspectPage, 1500);
-            setTimeout(checkNetworkResources, 2000);
-        }
-
-        function testSDKOnly() {
-            logDebug('🧪 === ISOLIERTER SDK TEST ===', 'info');
-            logDebug(`Genesys Object: ${typeof Genesys !== 'undefined' ? '✅ Verfügbar' : '❌ Nicht verfügbar'}`, 
-                    typeof Genesys !== 'undefined' ? 'success' : 'error');
-            
-            if (typeof Genesys !== 'undefined') {
-                logDebug(`Properties: ${Object.keys(Genesys).length} gefunden`, 'info');
-                logDebug(`Ready Status: ${window.genesysReady ? '✅ Ready' : '⏳ Wartend'}`, 
-                        window.genesysReady ? 'success' : 'warning');
-            }
-        }
-
-        function testBasicCommands() {
-            logDebug('🧪 === COMMAND FUNKTIONS-TEST ===', 'info');
-            
-            if (typeof Genesys === 'undefined') {
-                logDebug('❌ Keine Commands möglich - SDK nicht verfügbar', 'error');
-                return;
-            }
-            
-            const testCommands = [
-                'version', 'status', 'info', 'help', 'ping',
-                'open', 'close', 'show', 'hide', 'toggle'
-            ];
-            
-            let workingCommands = 0;
-            testCommands.forEach(function(cmd) {
+            basicCommands.forEach(function(cmd) {
                 try {
                     const result = Genesys(cmd);
-                    logDebug(`✅ "${cmd}": ${result || 'OK'}`, 'success');
-                    workingCommands++;
+                    addDebugLog('✅ Genesys("' + cmd + '"): ' + (result || 'OK'));
                 } catch (e) {
-                    logDebug(`❌ "${cmd}": ${e.message}`, 'error');
+                    addDebugLog('❌ Genesys("' + cmd + '"): ' + e.message);
                 }
             });
             
-            logDebug(`📊 Funktionierende Commands: ${workingCommands}/${testCommands.length}`, 
-                    workingCommands > 0 ? 'success' : 'error');
+            // Test 3: Plugin Detection (but don't load)
+            addDebugLog('');
+            addDebugLog('🔍 === PLUGIN DETECTION ===');
+            
+            // Check what happens when we ask about plugins (without loading)
+            try {
+                const plugins = ['webchat', 'messenger', 'webmessaging'];
+                plugins.forEach(function(plugin) {
+                    try {
+                        // Try to get plugin info without loading
+                        addDebugLog('🔍 Plugin "' + plugin + '": Checking...');
+                        // Don't actually call the plugin, just log that we're checking
+                    } catch (e) {
+                        addDebugLog('❌ Plugin "' + plugin + '": ' + e.message);
+                    }
+                });
+            } catch (e) {
+                addDebugLog('❌ Plugin check failed: ' + e.message);
+            }
+            
+            // Test 4: Try simple open (without expecting plugins)
+            addDebugLog('');
+            addDebugLog('🚀 === SIMPLE OPEN TEST ===');
+            
+            try {
+                Genesys('open');
+                addDebugLog('✅ Genesys("open"): Command sent');
+                
+                // Check if anything appeared
+                setTimeout(function() {
+                    checkForAnyGenesysElements();
+                }, 3000);
+                
+            } catch (e) {
+                addDebugLog('❌ Genesys("open"): ' + e.message);
+                checkForAnyGenesysElements();
+            }
         }
 
-        function inspectPage() {
-            logDebug('🔍 === SEITEN-ANALYSE ===', 'info');
+        function checkForAnyGenesysElements() {
+            addDebugLog('');
+            addDebugLog('🔍 === DOM INSPECTION ===');
             
+            // Look for ANY Genesys-related elements
             const allElements = document.querySelectorAll('*');
-            let stats = {
-                total: allElements.length,
-                scripts: document.querySelectorAll('script').length,
-                iframes: document.querySelectorAll('iframe').length,
-                genesys: 0,
-                hidden: 0
-            };
+            let genesysElements = [];
             
-            for (let el of allElements) {
+            for (let i = 0; i < allElements.length; i++) {
+                const el = allElements[i];
                 const className = el.className ? el.className.toString().toLowerCase() : '';
                 const id = el.id ? el.id.toLowerCase() : '';
+                const tagName = el.tagName.toLowerCase();
                 
                 if (className.includes('genesys') || id.includes('genesys') || 
-                    className.includes('cx-') || id.includes('cx-')) {
-                    stats.genesys++;
-                }
-                
-                if (el.offsetHeight === 0 || el.offsetWidth === 0) {
-                    stats.hidden++;
+                    className.includes('cx-') || id.includes('cx-') ||
+                    (tagName === 'iframe' && (el.src.includes('genesys') || el.src.includes('pure') || el.src.includes('chat')))) {
+                    
+                    genesysElements.push({
+                        tag: tagName,
+                        class: className,
+                        id: id,
+                        src: el.src || '',
+                        visible: el.offsetHeight > 0 && el.offsetWidth > 0
+                    });
                 }
             }
             
-            logDebug(`📊 Seiten-Statistiken:`, 'info');
-            logDebug(`   Total Elemente: ${stats.total}`, 'info');
-            logDebug(`   Scripts: ${stats.scripts}`, 'info');
-            logDebug(`   iFrames: ${stats.iframes}`, 'info');
-            logDebug(`   Genesys Elemente: ${stats.genesys}`, stats.genesys > 0 ? 'success' : 'warning');
-            logDebug(`   Versteckte Elemente: ${stats.hidden}`, 'info');
+            if (genesysElements.length > 0) {
+                addDebugLog('✅ Gefundene Genesys Elemente: ' + genesysElements.length);
+                genesysElements.forEach(function(el, index) {
+                    addDebugLog('📋 Element ' + (index + 1) + ': ' + el.tag + 
+                              (el.class ? ' class="' + el.class + '"' : '') +
+                              (el.id ? ' id="' + el.id + '"' : '') +
+                              ' visible=' + el.visible);
+                });
+            } else {
+                addDebugLog('❌ Keine Genesys Elemente im DOM gefunden');
+            }
+            
+            showBasicTestResults();
         }
 
-        function checkNetworkResources() {
-            logDebug('🌐 === NETZWERK-RESSOURCEN ANALYSE ===', 'info');
+        function showBasicTestResults() {
+            addDebugLog('');
+            addDebugLog('📊 === TEST ERGEBNISSE ===');
             
-            if (performance && performance.getEntriesByType) {
-                const resources = performance.getEntriesByType('resource');
-                const genesysResources = resources.filter(r => 
-                    r.name.includes('genesys') || 
-                    r.name.includes('pure') || 
-                    r.name.includes('mypurecloud')
-                );
+            const chatContainer = document.getElementById('chat-widget-container');
+            
+            if (typeof Genesys !== 'undefined') {
+                addDebugLog('🎯 FAZIT: Genesys SDK ist geladen, aber keine Widgets erscheinen');
+                addDebugLog('💡 NÄCHSTER SCHRITT: Deployment-Typ prüfen');
                 
-                logDebug(`Genesys Ressourcen geladen: ${genesysResources.length}`, 'info');
-                
-                genesysResources.forEach(function(resource) {
-                    const success = resource.responseEnd > 0;
-                    const loadTime = success ? Math.round(resource.responseEnd - resource.responseStart) : 0;
-                    const fileName = resource.name.split('/').pop();
-                    
-                    logDebug(`${success ? '✅' : '❌'} ${fileName} ${success ? `(${loadTime}ms)` : '(Fehler)'}`, 
-                            success ? 'success' : 'error');
-                });
-                
-                if (genesysResources.length === 0) {
-                    logDebug('⚠️ Keine Genesys Netzwerk-Ressourcen gefunden', 'warning');
-                } else {
-                    logDebug(`📊 ${genesysResources.length} Genesys Ressource(n) analysiert`, 'success');
+                if (chatContainer) {
+                    chatContainer.innerHTML = `
+                        <div style="background: rgba(255,255,255,0.9); color: #333; padding: 25px; border-radius: 15px;">
+                            <h3 style="color: #0066cc; margin: 0 0 20px 0;">🧪 Basic Genesys Test Ergebnisse</h3>
+                            
+                            <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; border-left: 4px solid #0066cc; margin-bottom: 20px;">
+                                <strong>✅ SDK Status:</strong> Genesys Bootstrap SDK ist geladen und funktionsfähig
+                            </div>
+                            
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin-bottom: 20px;">
+                                <strong>⚠️ Problem:</strong> Keine Chat/Messaging Widgets werden erstellt
+                            </div>
+                            
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                                <strong>🔍 Mögliche Ursachen:</strong><br>
+                                • Deployment ist nicht für "Web Chat" konfiguriert<br>
+                                • AI Studio Bot benötigt spezielles Deployment-Template<br>
+                                • Queue oder Flow nicht korrekt zugewiesen<br>
+                                • Deployment-Status nicht "Active"
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button onclick="showDeploymentAdvice()" style="padding: 10px 20px; background: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">💡 Deployment Beratung</button>
+                                <button onclick="openGenesysCloudMessaging()" style="padding: 10px 20px; background: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">☁️ Genesys Cloud</button>
+                            </div>
+                        </div>
+                    `;
                 }
             } else {
-                logDebug('⚠️ Performance API nicht verfügbar', 'warning');
+                addDebugLog('❌ FAZIT: Genesys SDK konnte nicht geladen werden');
+                
+                if (chatContainer) {
+                    chatContainer.innerHTML = `
+                        <div style="background: rgba(220,53,69,0.1); color: #721c24; padding: 25px; border-radius: 15px; border: 1px solid rgba(220,53,69,0.2);">
+                            <h3 style="color: #dc3545; margin: 0 0 15px 0;">❌ SDK Loading Failed</h3>
+                            <p>Das Genesys Bootstrap SDK konnte nicht geladen werden.</p>
+                            <p><strong>Mögliche Ursachen:</strong></p>
+                            <ul>
+                                <li>Deployment ID ist ungültig</li>
+                                <li>Environment ist falsch</li>
+                                <li>Netzwerk-Verbindungsprobleme</li>
+                            </ul>
+                        </div>
+                    `;
+                }
             }
         }
 
-        function clearLogs() {
+        function showDeploymentAdvice() {
+            const advice = `DEPLOYMENT BERATUNG:
+
+AKTUELLER STATUS:
+✅ Genesys SDK lädt erfolgreich
+❌ Keine Chat-Widgets erscheinen
+
+PROBLEM ANALYSE:
+Ihr Deployment (769e1351-f0d1-4485-9dd8-397ea63c615b) ist möglicherweise nicht für Web Chat konfiguriert.
+
+LÖSUNGSSCHRITTE:
+
+1. DEPLOYMENT ÜBERPRÜFEN:
+   • Genesys Cloud → Admin → Contact Center → Web Chat Deployments
+   • Suchen Sie nach Ihrer ID: 769e1351-f0d1-4485-9dd8-397ea63c615b
+   • Status muss "Active" sein
+
+2. CHANNEL KONFIGURATION:
+   • Im Deployment → Configuration Tab
+   • "Web Chat" Channel muss aktiviert sein
+   • Queue muss zugewiesen sein
+
+3. AI STUDIO BOT:
+   • Bot muss als "Inbound Message Flow" konfiguriert sein
+   • Flow muss "Published" status haben
+   • Bot muss der Queue zugewiesen sein
+
+4. ALTERNATIVE: NEUES DEPLOYMENT
+   • Template: "Web Chat" (nicht "Web Messaging")
+   • Channel: Web Chat aktivieren
+   • Ihren AI Studio Bot zuweisen
+
+EMPFEHLUNG:
+Erstellen Sie ein neues Deployment mit dem "Web Chat" Template speziell für Website-Integration.`;
+
+            alert(advice);
+            addDebugLog('💡 Deployment Beratung angezeigt');
+        }
+
+        function checkForWebMessagingWidget() {
+            // Look for Web Messaging specific elements
+            const selectors = [
+                // Web Messaging selectors
+                '[data-messenger]',
+                '[class*="messenger"]',
+                '[id*="messenger"]',
+                
+                // Genesys Web Messaging selectors  
+                '.genesys-messenger',
+                '.web-messaging',
+                '[data-genesys-messenger]',
+                
+                // iFrame selectors
+                'iframe[src*="messenger"]',
+                'iframe[src*="webchat"]',
+                'iframe[title*="messenger"]'
+            ];
+            
+            for (let selector of selectors) {
+                const elements = document.querySelectorAll(selector);
+                if (elements.length > 0) {
+                    addDebugLog('🔍 Widget gefunden mit Selector: ' + selector);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function showWebMessagingFallback() {
+            addDebugLog('🔧 Erstelle Web Messaging Fallback...');
+            
+            const chatContainer = document.getElementById('chat-widget-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = `
+                    <div style="background: linear-gradient(135deg, #0066cc, #004499); border-radius: 15px; padding: 0; overflow: hidden; min-height: 500px; position: relative;">
+                        <!-- Header -->
+                        <div style="background: rgba(255,255,255,0.1); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🤖</div>
+                                <div>
+                                    <h3 style="color: white; margin: 0; font-size: 1.2rem;">IT-Service Desk AI Studio Bot</h3>
+                                    <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 0.9rem;">Deployment: 769e1351-f0d1-4485-9dd8-397ea63c615b</p>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <div style="background: rgba(255,165,0,0.3); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">⚠️ Fallback</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Problem Description -->
+                        <div style="padding: 20px; background: rgba(255,255,255,0.05);">
+                            <div style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 10px; border-left: 4px solid #ff9500;">
+                                <h4 style="margin: 0 0 15px 0; color: #ff9500;">⚠️ Web Messaging Widget Problem</h4>
+                                <p style="margin: 0 0 15px 0; line-height: 1.6;">
+                                    <strong>Status:</strong> Ihr AI Studio Bot Deployment ist korrekt konfiguriert, aber das Web Messaging Widget lädt nicht in externe Webseiten.
+                                </p>
+                                <p style="margin: 0 0 15px 0; line-height: 1.6;">
+                                    <strong>Mögliche Ursachen:</strong><br>
+                                    • Web Messaging Service benötigt möglicherweise spezielle Domain-Konfiguration<br>
+                                    • AI Studio Bots haben eventuell Einschränkungen für externe Einbettung<br>
+                                    • Deployment-Typ ist nicht für Website-Integration optimiert
+                                </p>
+                                <p style="margin: 0; line-height: 1.6;">
+                                    <strong>Empfehlung:</strong> Testen Sie den Bot direkt in der Genesys Cloud Umgebung oder erstellen Sie ein neues "Website Chat" Deployment.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div style="padding: 20px; background: rgba(255,255,255,0.1);">
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button onclick="testDirectWebMessaging()" style="padding: 12px 20px; background: white; color: #0066cc; border: none; border-radius: 25px; cursor: pointer; font-weight: 600;">🔧 Direkte Integration testen</button>
+                                <button onclick="openGenesysCloudMessaging()" style="padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; cursor: pointer;">☁️ Genesys Cloud öffnen</button>
+                                <button onclick="showIntegrationAdvice()" style="padding: 12px 20px; background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; cursor: pointer;">💡 Integration Beratung</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            addDebugLog('✅ Web Messaging Fallback Interface erstellt');
+        }
+
+        function testDirectWebMessaging() {
+            addDebugLog('🧪 Teste direkte Web Messaging Integration...');
+            
+            // Try to load Web Messaging directly
+            const testScript = document.createElement('script');
+            testScript.src = 'https://apps.mypurecloud.de/webmessaging/v1/messenger.js?deploymentId=769e1351-f0d1-4485-9dd8-397ea63c615b&environment=prod-euc1';
+            testScript.onload = function() {
+                addDebugLog('✅ Alternative Web Messaging URL erfolgreich geladen');
+                alert('Alternative Web Messaging URL gefunden! Checke die Console für Details.');
+            };
+            testScript.onerror = function() {
+                addDebugLog('❌ Alternative Web Messaging URL nicht verfügbar');
+                alert('Alternative Integration fehlgeschlagen. Möglicherweise ist dieser Deployment-Typ nicht für externe Websites vorgesehen.');
+            };
+            document.head.appendChild(testScript);
+        }
+
+        function showIntegrationAdvice() {
+            const advice = `INTEGRATION BERATUNG:
+
+Das Problem: Ihr AI Studio Bot Deployment funktioniert in Genesys Cloud, aber nicht auf externen Websites.
+
+LÖSUNGSANSÄTZE:
+
+1. NEUES DEPLOYMENT ERSTELLEN:
+   • Admin → Message → Messenger Deployments  
+   • "Create New" → Template: "Website Chat"
+   • Channel: "Web Messaging" aktivieren
+   • AI Studio Bot zuweisen
+
+2. DEPLOYMENT-TYP PRÜFEN:
+   • Aktuelles Deployment ist für "Service" konfiguriert
+   • Eventuell "Website" Template verwenden
+
+3. ALTERNATIVE INTEGRATION:
+   • iframe-Embed des Genesys Cloud Messaging
+   • API-basierte Integration
+   • Hybrid-Ansatz mit Weiterleitung
+
+4. GENESYS SUPPORT:
+   • Kontaktieren Sie Genesys Support
+   • Frage: "AI Studio Bot Web Messaging externe Website"
+
+DEPLOYMENT DETAILS:
+• ID: 769e1351-f0d1-4485-9dd8-397ea63c615b
+• Environment: prod-euc1
+• Type: Web Messaging Service`;
+
+            alert(advice);
+            addDebugLog('💡 Integration Beratung angezeigt');
+        }
+
+        function checkForActiveMessenger() {
+            // Look for any sign of active messenger
+            const messengerSelectors = [
+                '[class*="genesys"]',
+                '[id*="genesys"]', 
+                '[class*="messenger"]',
+                '[id*="messenger"]',
+                'iframe[src*="genesys"]',
+                'iframe[src*="messaging"]'
+            ];
+            
+            for (let selector of messengerSelectors) {
+                const elements = document.querySelectorAll(selector);
+                if (elements.length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function createAdvancedMessengerInterface() {
+            addDebugLog('🔧 Erstelle erweiterte Messenger-Schnittstelle...');
+            
+            const chatContainer = document.getElementById('chat-widget-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = `
+                    <div style="background: linear-gradient(135deg, #0066cc, #004499); border-radius: 15px; padding: 0; overflow: hidden; min-height: 500px; position: relative;">
+                        <!-- Header -->
+                        <div style="background: rgba(255,255,255,0.1); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🤖</div>
+                                <div>
+                                    <h3 style="color: white; margin: 0; font-size: 1.2rem;">IT-Service Desk AI Assistant</h3>
+                                    <p style="color: rgba(255,255,255,0.8); margin: 5px 0 0 0; font-size: 0.9rem;">Powered by Genesys AI Studio</p>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <div style="background: rgba(0,255,0,0.2); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem;">● Online</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Area -->
+                        <div id="chat-messages" style="padding: 20px; min-height: 300px; background: rgba(255,255,255,0.05);">
+                            <div style="background: rgba(255,255,255,0.9); color: #333; padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #0066cc;">
+                                <strong>🤖 AI Assistant:</strong><br><br>
+                                Hallo! Ich bin Ihr AI-gestützter IT-Service Desk Assistent.<br><br>
+                                <strong>Ich kann Ihnen helfen bei:</strong><br>
+                                • IT-Problemen und Störungen<br>
+                                • Software-Support<br>
+                                • Hardware-Anfragen<br>
+                                • Account-Verwaltung<br>
+                                • Allgemeine IT-Beratung<br><br>
+                                <em>Wie kann ich Ihnen heute helfen?</em>
+                            </div>
+                        </div>
+                        
+                        <!-- Input Area -->
+                        <div style="padding: 20px; background: rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.2);">
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="chat-input" placeholder="Beschreiben Sie Ihr IT-Problem..." style="flex: 1; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.3); border-radius: 25px; background: rgba(255,255,255,0.9); font-size: 1rem;" onkeypress="if(event.key==='Enter') sendAdvancedMessage()">
+                                <button onclick="sendAdvancedMessage()" style="padding: 12px 20px; background: white; color: #0066cc; border: none; border-radius: 25px; cursor: pointer; font-weight: 600; min-width: 80px;">Senden</button>
+                            </div>
+                            <div style="margin-top: 10px; text-align: center;">
+                                <button onclick="startGenesysMessenger()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 15px; cursor: pointer; font-size: 0.8rem; margin: 0 5px;">🔗 Genesys Messenger</button>
+                                <button onclick="openGenesysCloudMessaging()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 15px; cursor: pointer; font-size: 0.8rem; margin: 0 5px;">☁️ Cloud Messaging</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Status -->
+                        <div style="position: absolute; top: 10px; right: 15px; background: rgba(0,0,0,0.3); color: white; padding: 5px 10px; border-radius: 10px; font-size: 0.7rem;">
+                            Deployment: ${window.location.hostname}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            addDebugLog('✅ Erweiterte Messenger-Schnittstelle erstellt');
+            
+            // Auto-focus input
+            setTimeout(function() {
+                const input = document.getElementById('chat-input');
+                if (input) input.focus();
+            }, 500);
+        }
+
+        function sendAdvancedMessage() {
+            const input = document.getElementById('chat-input');
+            const messagesArea = document.getElementById('chat-messages');
+            
+            if (input && messagesArea && input.value.trim()) {
+                const userMessage = input.value.trim();
+                
+                // Add user message
+                const userMsgDiv = document.createElement('div');
+                userMsgDiv.style.cssText = 'text-align: right; margin-bottom: 15px;';
+                userMsgDiv.innerHTML = `<div style="display: inline-block; background: rgba(255,255,255,0.9); color: #333; padding: 10px 15px; border-radius: 10px; max-width: 70%; border-right: 4px solid #0066cc;"><strong>Sie:</strong><br>${userMessage}</div>`;
+                messagesArea.appendChild(userMsgDiv);
+                
+                // Clear input
+                input.value = '';
+                
+                // Add AI response (simulated)
+                setTimeout(function() {
+                    const aiResponse = getAIResponse(userMessage);
+                    const aiMsgDiv = document.createElement('div');
+                    aiMsgDiv.style.cssText = 'margin-bottom: 15px;';
+                    aiMsgDiv.innerHTML = `<div style="background: rgba(255,255,255,0.9); color: #333; padding: 15px; border-radius: 10px; border-left: 4px solid #0066cc;"><strong>🤖 AI Assistant:</strong><br><br>${aiResponse}</div>`;
+                    messagesArea.appendChild(aiMsgDiv);
+                    
+                    // Scroll to bottom
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 1000);
+                
+                // Scroll to bottom
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+                
+                addDebugLog('💬 Chat-Nachricht gesendet: ' + userMessage);
+            }
+        }
+
+        function getAIResponse(message) {
+            const responses = [
+                'Ich verstehe Ihr Problem. Für eine detaillierte Lösung würde ich Sie gerne an einen unserer Spezialisten weiterleiten. Der echte AI Studio Bot in Genesys Cloud kann Ihnen noch besser helfen.',
+                'Das ist eine interessante Anfrage. Unser AI Studio Bot hat Zugriff auf die komplette Wissensdatenbank und kann Ihnen eine präzise Antwort geben.',
+                'Vielen Dank für Ihre Nachricht. Dies ist eine Demo-Version. Der vollständige AI Assistant ist über das Genesys Cloud Messaging verfügbar.',
+                'Ich notiere Ihr Anliegen. Für eine umfassende Bearbeitung empfehle ich Ihnen, das echte Genesys Messaging-System zu verwenden.',
+                'Das klingt nach einem Fall für unseren Experten-Bot. Klicken Sie auf "Genesys Messenger" um den vollen Service zu nutzen.'
+            ];
+            
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        function startGenesysMessenger() {
+            addDebugLog('🔄 Versuche Genesys Messenger zu starten...');
+            
+            // Try all available methods
+            const methods = [
+                () => window.GenesysMessenger && window.GenesysMessenger.open(),
+                () => window.Genesys && Genesys('command', 'Messenger.open'),
+                () => window.Genesys && Genesys('open')
+            ];
+            
+            let success = false;
+            methods.forEach((method, index) => {
+                try {
+                    method();
+                    addDebugLog('✅ Methode ' + (index + 1) + ' erfolgreich');
+                    success = true;
+                } catch (e) {
+                    addDebugLog('❌ Methode ' + (index + 1) + ' fehlgeschlagen: ' + e.message);
+                }
+            });
+            
+            if (!success) {
+                alert('Der Genesys Messenger konnte nicht gestartet werden. Verwenden Sie bitte den Cloud Messaging Link.');
+            }
+        }
+
+        function checkForMessengerWidget() {
+            // Look for Messenger widgets with broader search
+            const selectors = [
+                // Standard Genesys selectors
+                '.genesys-messenger',
+                '[data-genesys-messenger]',
+                '#genesys-messenger',
+                '.cx-messenger',
+                
+                // Genesys widget selectors
+                '.genesys-widget',
+                '[class*="genesys"]',
+                '[id*="genesys"]',
+                
+                // Generic messenger selectors
+                '[class*="messenger"]',
+                '[id*="messenger"]',
+                
+                // Iframe selectors
+                'iframe[src*="genesys"]',
+                'iframe[src*="messaging"]'
+            ];
+            
+            let foundWidget = null;
+            for (let selector of selectors) {
+                const elements = document.querySelectorAll(selector);
+                if (elements.length > 0) {
+                    foundWidget = elements[0];
+                    addDebugLog('✅ Widget gefunden: ' + selector + ' (' + elements.length + ' Element(e))');
+                    break;
+                }
+            }
+            
+            const chatContainer = document.getElementById('chat-widget-container');
+            
+            if (foundWidget) {
+                addDebugLog('🎉 Messenger Widget erfolgreich geladen!');
+                if (chatContainer) {
+                    chatContainer.innerHTML = '<div class="chat-placeholder"><div style="margin-bottom: 20px;">✅</div><div><strong>Messenger Widget aktiv!</strong><br>Das Widget sollte sichtbar sein.</div></div>';
+                }
+            } else {
+                addDebugLog('❌ Kein Messenger Widget gefunden');
+                addDebugLog('🔍 Prüfe DOM für versteckte Widgets...');
+                
+                // Check for any Genesys-related elements
+                const allElements = document.querySelectorAll('*');
+                let genesysElements = 0;
+                for (let el of allElements) {
+                    const className = el.className ? el.className.toString().toLowerCase() : '';
+                    const id = el.id ? el.id.toLowerCase() : '';
+                    if (className.includes('genesys') || id.includes('genesys') || 
+                        className.includes('cx-') || id.includes('cx-')) {
+                        genesysElements++;
+                    }
+                }
+                
+                addDebugLog('🔍 Gefundene Genesys-Elemente im DOM: ' + genesysElements);
+                
+                if (genesysElements > 0) {
+                    addDebugLog('💡 Widget ist geladen aber möglicherweise nicht sichtbar');
+                    if (chatContainer) {
+                        chatContainer.innerHTML = '<div class="chat-placeholder"><div style="margin-bottom: 20px;">🔍</div><div><strong>Widget teilweise geladen</strong><br>Das Widget existiert aber ist möglicherweise noch nicht vollständig initialisiert.<br><br><button class="action-button" onclick="forceShowMessenger()" style="margin-top: 15px;">Widget forcieren</button></div></div>';
+                    }
+                } else {
+                    showManualLaunchOption();
+                }
+            }
+        }
+
+        function forceShowMessenger() {
+            addDebugLog('🔧 Versuche Widget zu forcieren...');
+            
+            // Try additional Genesys commands to make widget visible
+            const commands = [
+                'Messenger.show',
+                'Messenger.maximize', 
+                'Messenger.open',
+                'Messenger.start',
+                'Widget.show',
+                'Widget.open',
+                'open'
+            ];
+            
+            commands.forEach(function(cmd) {
+                try {
+                    if (cmd === 'open') {
+                        Genesys(cmd);
+                    } else {
+                        Genesys('command', cmd);
+                    }
+                    addDebugLog('📤 ' + cmd + ' - versucht');
+                } catch (e) {
+                    addDebugLog('❌ ' + cmd + ' - fehlgeschlagen: ' + e.message);
+                }
+            });
+            
+            // Try to find and manipulate the widget directly
+            setTimeout(function() {
+                addDebugLog('🔍 Suche Widget zum manuellen Einblenden...');
+                
+                // Find hidden messenger elements
+                const hiddenElements = document.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"], [hidden]');
+                let foundHiddenMessenger = false;
+                
+                hiddenElements.forEach(function(el) {
+                    const className = el.className ? el.className.toString().toLowerCase() : '';
+                    const id = el.id ? el.id.toLowerCase() : '';
+                    
+                    if (className.includes('genesys') || className.includes('messenger') || 
+                        id.includes('genesys') || id.includes('messenger')) {
+                        
+                        // Try to show the element
+                        el.style.display = 'block';
+                        el.style.visibility = 'visible';
+                        el.removeAttribute('hidden');
+                        
+                        // Position it visibly
+                        el.style.position = 'fixed';
+                        el.style.bottom = '20px';
+                        el.style.right = '20px';
+                        el.style.zIndex = '9999';
+                        
+                        addDebugLog('✅ Widget sichtbar gemacht: ' + (className || id || 'unbekannt'));
+                        foundHiddenMessenger = true;
+                    }
+                });
+                
+                if (foundHiddenMessenger) {
+                    addDebugLog('🎉 Widget sollte jetzt sichtbar sein!');
+                    const chatContainer = document.getElementById('chat-widget-container');
+                    if (chatContainer) {
+                        chatContainer.innerHTML = '<div class="chat-placeholder"><div style="margin-bottom: 20px;">✅</div><div><strong>Widget erfolgreich eingeblendet!</strong><br>Das Messenger-Widget sollte jetzt in der unteren rechten Ecke sichtbar sein.</div></div>';
+                    }
+                } else {
+                    addDebugLog('⚠️ Kein verstecktes Widget gefunden');
+                    createCustomMessengerButton();
+                }
+                
+                checkForMessengerWidget();
+            }, 2000);
+        }
+
+        function createCustomMessengerButton() {
+            addDebugLog('🔧 Erstelle eigenen Messenger-Button...');
+            
+            // Create floating messenger button
+            const messengerBtn = document.createElement('div');
+            messengerBtn.id = 'custom-messenger-btn';
+            messengerBtn.innerHTML = '💬';
+            messengerBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                background: #0066cc;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                color: white;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 9999;
+                transition: all 0.3s ease;
+            `;
+            
+            messengerBtn.addEventListener('click', function() {
+                addDebugLog('🚀 Custom Messenger Button geklickt');
+                
+                // Try to trigger Genesys messenger
+                try {
+                    Genesys('command', 'Messenger.open');
+                    addDebugLog('📤 Messenger.open durch Custom Button ausgelöst');
+                } catch (e) {
+                    addDebugLog('❌ Custom Button trigger fehlgeschlagen: ' + e.message);
+                    // Fallback: Show inline chat
+                    showInlineChat();
+                }
+            });
+            
+            messengerBtn.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.boxShadow = '0 6px 20px rgba(0,0,0,0.4)';
+            });
+            
+            messengerBtn.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+            });
+            
+            document.body.appendChild(messengerBtn);
+            addDebugLog('✅ Custom Messenger Button erstellt');
+        }
+
+        function showInlineChat() {
+            addDebugLog('💬 Zeige Inline-Chat als Fallback...');
+            
+            const chatContainer = document.getElementById('chat-widget-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.95); color: #333; border-radius: 15px; padding: 20px; min-height: 400px;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h3 style="color: #0066cc; margin: 0;">IT-Service Desk Chat</h3>
+                            <p style="margin: 5px 0; font-size: 0.9rem;">Verbunden mit AI Studio Bot</p>
+                        </div>
+                        <div style="background: #f5f5f5; border-radius: 10px; padding: 15px; margin-bottom: 15px; min-height: 200px;">
+                            <div style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+                                <strong>🤖 AI Assistant:</strong><br>
+                                Hallo! Ich bin Ihr IT-Service Desk Assistent. Wie kann ich Ihnen heute helfen?
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" placeholder="Ihre Nachricht..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                            <button onclick="sendChatMessage()" style="padding: 10px 20px; background: #0066cc; color: white; border: none; border-radius: 5px; cursor: pointer;">Senden</button>
+                        </div>
+                        <div style="margin-top: 10px; font-size: 0.8rem; color: #666; text-align: center;">
+                            Hinweis: Dies ist ein Fallback-Chat. Der echte AI Studio Bot ist über das Genesys Widget verfügbar.
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function sendChatMessage() {
+            alert('Hinweis: Dies ist nur ein Demo-Chat. Der echte AI Studio Bot funktioniert über das Genesys Messenger Widget.');
+        }
+
+        function showManualLaunchOption() {
+            addDebugLog('🔄 Zeige manuelle Optionen...');
+            
+            const chatContainer = document.getElementById('chat-widget-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = '<div class="chat-placeholder"><div style="margin-bottom: 20px;">🔧</div><div><strong>Widget Integration Problem</strong><br><br>Das Deployment ist korrekt konfiguriert, aber das Widget lädt nicht automatisch.<br><br><button class="action-button" onclick="openGenesysCloudMessaging()" style="margin-top: 15px;">Genesys Cloud Messaging öffnen</button><br><br><button class="action-button" onclick="showIntegrationHelp()" style="margin-top: 10px;">Integration Hilfe</button></div></div>';
+            }
+        }
+
+        function openGenesysCloudMessaging() {
+            window.open('https://apps.mypurecloud.de/directory/#/messaging', '_blank');
+            addDebugLog('🔗 Genesys Cloud Messaging geöffnet');
+        }
+
+        function showIntegrationHelp() {
+            const helpText = 'INTEGRATION HILFE:\n\n' +
+                           '1. Dein Deployment ist korrekt konfiguriert\n' +
+                           '2. Der AI Studio Bot ist verbunden\n' +
+                           '3. Das Widget lädt aber nicht automatisch\n\n' +
+                           'MÖGLICHE LÖSUNGEN:\n' +
+                           '• Prüfe ob eine Queue dem Deployment zugewiesen ist\n' +
+                           '• Stelle sicher dass die Queue "Web Messaging" unterstützt\n' +
+                           '• Prüfe ob der Bot richtig published ist\n' +
+                           '• Teste das Widget zuerst in Genesys Cloud direkt\n\n' +
+                           'DEPLOYMENT ID: 769e1351-f0d1-4485-9dd8-397ea63c615b';
+            
+            alert(helpText);
+            addDebugLog('💡 Integration Hilfe angezeigt');
+        }
+
+        function addDebugLog(message) {
+            const debugLog = document.getElementById('debug-log');
+            if (debugLog) {
+                const timestamp = new Date().toLocaleTimeString();
+                debugLog.innerHTML += '<div style="margin: 2px 0; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">[' + timestamp + '] ' + message + '</div>';
+                debugLog.scrollTop = debugLog.scrollHeight;
+            }
+            console.log('[DEBUG] ' + message);
+        }
+
+        function runDiagnostics() {
             const debugLog = document.getElementById('debug-log');
             if (debugLog) {
                 debugLog.innerHTML = '';
             }
-            logDebug('🗑️ Debug Logs gelöscht', 'info');
+            
+            addDebugLog('🔧 === GENESYS CLOUD DIAGNOSE ===');
+            addDebugLog('');
+            
+            // 1. SDK Check
+            if (typeof Genesys !== 'undefined') {
+                addDebugLog('✅ Genesys SDK: Geladen');
+                try {
+                    addDebugLog('📋 SDK Version: ' + (Genesys.version || 'Unbekannt'));
+                } catch (e) {
+                    addDebugLog('⚠️ SDK Version: Nicht verfügbar');
+                }
+            } else {
+                addDebugLog('❌ Genesys SDK: NICHT geladen');
+                return;
+            }
+            
+            // 2. Environment Check
+            addDebugLog('🌐 Environment: prod-euc1 (Frankfurt)');
+            addDebugLog('🆔 Deployment ID: 769e1351-f0d1-4485-9dd8-397ea63c615b');
+            
+            // 3. Plugin Check
+            addDebugLog('');
+            addDebugLog('🔌 Plugin-Verfügbarkeit:');
+            
+            const plugins = ['messenger', 'webmessaging', 'chat', 'webchat'];
+            plugins.forEach(function(plugin) {
+                try {
+                    Genesys('command', plugin + '.ping');
+                    addDebugLog('✅ ' + plugin + ': Verfügbar');
+                } catch (e) {
+                    addDebugLog('❌ ' + plugin + ': NICHT verfügbar');
+                }
+            });
+            
+            // 4. DOM Check
+            addDebugLog('');
+            addDebugLog('🖥️ DOM-Elemente:');
+            const widgets = document.querySelectorAll('[data-genesys-widget], .genesys-widget, #genesys-messenger, .cx-widget');
+            if (widgets.length > 0) {
+                addDebugLog('✅ Chat-Widgets gefunden: ' + widgets.length);
+            } else {
+                addDebugLog('❌ Keine Chat-Widgets im DOM');
+            }
+            
+            // 5. Empfehlungen
+            addDebugLog('');
+            addDebugLog('💡 === EMPFEHLUNGEN ===');
+            addDebugLog('1️⃣ Gehe zu: Admin → Contact Center → Web Messaging Deployments');
+            addDebugLog('2️⃣ Prüfe ob Deployment aktiv ist');
+            addDebugLog('3️⃣ Weise eine Queue dem Deployment zu');
+            addDebugLog('4️⃣ Aktiviere "Web Messaging" Channel');
+            addDebugLog('5️⃣ Publishe das Deployment');
         }
 
-        function showHelp() {
-            const helpText = `🆘 GENESYS CHAT TEST HILFE
-
-🎯 ZIEL:
-Testen ob Ihr AI Studio Bot auf externen Websites funktioniert
-
-📋 SCHRITTE:
-1. "AI Studio Chat starten" klicken
-2. Debug Logs beobachten
-3. Nach Chat-Widget suchen
-4. Bei Problemen Diagnose verwenden
-
-🔧 TROUBLESHOOTING:
-• Grüne Logs = Erfolg
-• Rote Logs = Fehler 
-• Gelbe Logs = Warnungen
-
-🚨 HÄUFIGE PROBLEME:
-• SDK lädt nicht → Netzwerk/Firewall prüfen
-• Widgets nicht gefunden → Deployment-Konfiguration
-• Commands fehlschlagen → AI Studio Bot nicht aktiv
-
-💡 LÖSUNGEN:
-• Vollständige Diagnose ausführen
-• Genesys Cloud Deployment prüfen
-• Queue-Zuweisung überprüfen
-• AI Studio Bot Status checken
-
-📞 DEPLOYMENT INFO:
-ID: 769e1351-f0d1-4485-9dd8-397ea63c615b
-Environment: prod-euc1 (Frankfurt)
-Channel: Web Messaging Service`;
-
-            alert(helpText);
-            logDebug('❓ Hilfe-Dialog angezeigt', 'info');
+        function openSocialMedia() {
+            alert('Social Media Integrationen werden konfiguriert...');
         }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('NTT Data Genesys Cloud Demo Platform geladen');
+        });
     </script>
+</body>
+</html>
