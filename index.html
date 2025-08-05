@@ -234,49 +234,8 @@
         </div>
     </div>
 
-    <!-- Genesys Bootstrap SDK - Unblocked on GitHub Pages -->
-    <script type="text/javascript" charset="utf-8">
-      (function (g, e, n, es, ys) {
-        g['_genesysJs'] = e;
-        g[e] = g[e] || function () {
-          (g[e].q = g[e].q || []).push(arguments)
-        };
-        g[e].t = 1 * new Date();
-        g[e].c = es;
-        ys = document.createElement('script'); 
-        ys.async = 1; 
-        ys.src = n; 
-        ys.charset = 'utf-8';
-        ys.onload = function() {
-            logDebug('✅ Genesys Bootstrap SDK erfolgreich geladen', 'success');
-            logDebug('🔗 SDK URL: ' + n, 'info');
-            window.genesysSDKLoaded = true;
-        };
-        ys.onerror = function() {
-            logDebug('❌ Genesys Bootstrap SDK Fehler beim Laden', 'error');
-            logDebug('🔗 Fehlerhafte URL: ' + n, 'error');
-            window.genesysSDKLoaded = false;
-        };
-        document.head.appendChild(ys);
-      })(window, 'Genesys', 'https://apps.mypurecloud.de/genesys-bootstrap/genesys.min.js', {
-        environment: 'prod-euc1',
-        deploymentId: '769e1351-f0d1-4485-9dd8-397ea63c615b'
-      });
-
-      // Genesys Ready Handler
-      window.addEventListener('load', function() {
-        if (typeof Genesys !== 'undefined') {
-          Genesys('subscribe', 'ready', function() {
-            logDebug('🚀 Genesys SDK Ready Event empfangen', 'success');
-            logDebug('📋 SDK erfolgreich initialisiert', 'success');
-            window.genesysReady = true;
-          });
-        }
-      });
-    </script>
-
     <script>
-        // Enhanced Debug Logging System
+        // DEBUG SYSTEM - MUSS ZUERST DEFINIERT WERDEN
         function logDebug(message, type = 'info', details = null) {
             const debugLog = document.getElementById('debug-log');
             const debugSection = document.getElementById('debug-section');
@@ -300,6 +259,75 @@
             
             console.log(`[GENESYS-${type.toUpperCase()}]`, message, details || '');
         }
+
+        // INITIALIZE EARLY
+        window.genesysSDKLoaded = false;
+        window.genesysReady = false;
+        
+        // PAGE READY
+        document.addEventListener('DOMContentLoaded', function() {
+            logDebug('📄 GitHub Pages Test-Seite geladen', 'success');
+            logDebug('🎯 Bereit für AI Studio Bot Test', 'info');
+        });
+    </script>
+
+    <!-- Genesys Bootstrap SDK -->
+    <script type="text/javascript" charset="utf-8">
+      (function (g, e, n, es, ys) {
+        g['_genesysJs'] = e;
+        g[e] = g[e] || function () {
+          (g[e].q = g[e].q || []).push(arguments)
+        };
+        g[e].t = 1 * new Date();
+        g[e].c = es;
+        ys = document.createElement('script'); 
+        ys.async = 1; 
+        ys.src = n; 
+        ys.charset = 'utf-8';
+        ys.onload = function() {
+            if (typeof logDebug === 'function') {
+                logDebug('✅ Genesys Bootstrap SDK erfolgreich geladen', 'success');
+                logDebug('🔗 SDK URL: ' + n, 'info');
+            }
+            window.genesysSDKLoaded = true;
+        };
+        ys.onerror = function() {
+            if (typeof logDebug === 'function') {
+                logDebug('❌ Genesys Bootstrap SDK Fehler beim Laden', 'error');
+                logDebug('🔗 Fehlerhafte URL: ' + n, 'error');
+            }
+            window.genesysSDKLoaded = false;
+        };
+        document.head.appendChild(ys);
+      })(window, 'Genesys', 'https://apps.mypurecloud.de/genesys-bootstrap/genesys.min.js', {
+        environment: 'prod-euc1',
+        deploymentId: '769e1351-f0d1-4485-9dd8-397ea63c615b'
+      });
+
+      // Genesys Ready Handler
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+            if (typeof Genesys !== 'undefined') {
+                try {
+                    Genesys('subscribe', 'ready', function() {
+                        if (typeof logDebug === 'function') {
+                            logDebug('🚀 Genesys SDK Ready Event empfangen', 'success');
+                            logDebug('📋 SDK erfolgreich initialisiert', 'success');
+                        }
+                        window.genesysReady = true;
+                    });
+                } catch (e) {
+                    if (typeof logDebug === 'function') {
+                        logDebug('❌ Genesys Ready Handler Fehler: ' + e.message, 'error');
+                    }
+                }
+            }
+        }, 1000);
+      });
+    </script>
+
+    <script>
+        // MAIN FUNCTIONS - NACH DEBUG SYSTEM
 
         // Main Chat Test Function
         function startChatTest() {
@@ -632,4 +660,58 @@
                             success ? 'success' : 'error');
                 });
                 
-                if (genesysResources.
+                if (genesysResources.length === 0) {
+                    logDebug('⚠️ Keine Genesys Netzwerk-Ressourcen gefunden', 'warning');
+                } else {
+                    logDebug(`📊 ${genesysResources.length} Genesys Ressource(n) analysiert`, 'success');
+                }
+            } else {
+                logDebug('⚠️ Performance API nicht verfügbar', 'warning');
+            }
+        }
+
+        function clearLogs() {
+            const debugLog = document.getElementById('debug-log');
+            if (debugLog) {
+                debugLog.innerHTML = '';
+            }
+            logDebug('🗑️ Debug Logs gelöscht', 'info');
+        }
+
+        function showHelp() {
+            const helpText = `🆘 GENESYS CHAT TEST HILFE
+
+🎯 ZIEL:
+Testen ob Ihr AI Studio Bot auf externen Websites funktioniert
+
+📋 SCHRITTE:
+1. "AI Studio Chat starten" klicken
+2. Debug Logs beobachten
+3. Nach Chat-Widget suchen
+4. Bei Problemen Diagnose verwenden
+
+🔧 TROUBLESHOOTING:
+• Grüne Logs = Erfolg
+• Rote Logs = Fehler 
+• Gelbe Logs = Warnungen
+
+🚨 HÄUFIGE PROBLEME:
+• SDK lädt nicht → Netzwerk/Firewall prüfen
+• Widgets nicht gefunden → Deployment-Konfiguration
+• Commands fehlschlagen → AI Studio Bot nicht aktiv
+
+💡 LÖSUNGEN:
+• Vollständige Diagnose ausführen
+• Genesys Cloud Deployment prüfen
+• Queue-Zuweisung überprüfen
+• AI Studio Bot Status checken
+
+📞 DEPLOYMENT INFO:
+ID: 769e1351-f0d1-4485-9dd8-397ea63c615b
+Environment: prod-euc1 (Frankfurt)
+Channel: Web Messaging Service`;
+
+            alert(helpText);
+            logDebug('❓ Hilfe-Dialog angezeigt', 'info');
+        }
+    </script>
